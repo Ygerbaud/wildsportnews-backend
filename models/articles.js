@@ -1,18 +1,21 @@
 const pool = require("../db-config");
 
+/**
+ * Récupération de tous les articles
+ */
 const findMany = () => {
-  return pool.query("SELECT * FROM articles ").then((results) => results);
+  return pool.query("SELECT articles.id,titre,resume,textcomplet,image,name FROM articles INNER JOIN categories ON articles.categorie_id=categories.id").then((results) => results);
 };
 
 /**
- * récupération de tous les catégories
+ * Récupération de tous les catégories
  */
 const findCategories = () => {
   return pool.query("SELECT * FROM categories ").then((results) => results);
 };
 
 /**
- * récupération d'un seul Article'
+ * Récupération d'un seul Article'
  */
 const findOne = (id) => {
   return pool
