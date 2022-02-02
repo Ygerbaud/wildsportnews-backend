@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "bcrypt-salt": "^1.1.10",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "cron": "^1.8.2",
@@ -35,4 +36,3 @@
     "nodemon": "^2.0.15"
   }
 }
-

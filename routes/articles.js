@@ -29,7 +29,7 @@ ArticlesRouter.get('/categories', (req, res) => {
 // Récupération d'un seul Article
 ArticlesRouter.get('/:id', (req, res) => {
   const { id } = req.params;
-  Report.findOne(id)
+  Article.findOne(id)
     .then((articles) => {
       res.json(articles.rows);
     })
