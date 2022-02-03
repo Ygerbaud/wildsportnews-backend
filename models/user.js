@@ -12,14 +12,14 @@ const findOneByEmail = (email) => {
 /**
  * Création d'un nouveau user dans la BDD
  */
-const create = ({ email, hashedPassword, uuiduser, favorite_id }) => {
+const create = ({ email, hashedPassword, uuiduser}) => {
   return pool
     .query(
-      'INSERT INTO users (email, hashedPassword, uuiduser,favorite_id) VALUES($1,$2,$3,$4) RETURNING *',
-      [email, hashedPassword, uuiduser,favorite_id]
+      'INSERT INTO users (email, hashedPassword, uuiduser) VALUES($1,$2,$3) RETURNING *',
+      [email, hashedPassword, uuiduser]
     )
     .then((result) => {
-      return { uuiduser,favorite_id };
+      return { uuiduser};
     });
 };
 

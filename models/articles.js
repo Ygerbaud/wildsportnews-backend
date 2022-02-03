@@ -23,8 +23,19 @@ const findOne = (id) => {
     .then((results) => results);
 };
 
+
+
+/**
+ *Suppression d'un Article'
+ */
+ const deleteOne = (id) => {
+  return pool
+    .query('DELETE FROM articles WHERE id = $1', [id])
+    .then(() => 'Report deleter successfully');
+};
 module.exports = {
   findMany,
   findOne,
   findCategories,
+  deleteOne
 };
