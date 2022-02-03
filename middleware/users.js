@@ -1,6 +1,9 @@
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
 const Joi = require("joi");
+const Users = require('../models/user');
+const userHelper = require('../helpers/users');
+
 
 const saltRound = 11;
 
@@ -53,8 +56,54 @@ const checkUserFields = (req, res, next) => {
   }
 };
 
+/**
+ * pour le login : vérifie le mot de passe
+ */
+ const checkPassword = (req, res, next) => {
+  Users.findOneByEmail(req.body.email)
+    .then((user) => {
+      bcrypt
+        .compare(req.body.password, user.hashedpassword)
+        .then((result) => {
+          if (result) {
+            req.body = user;
+            delete req.body.hashedpassword;
+            delete req.body.id;
+            next();
+          } else {
+            res.status(404).json({ msg: 'Invalid Credentials' });
+          }
+        })
+        .catch((err) => res.status(404).json({ msg: 'error' }));
+    })
+    .catch((err) => res.status(404).json({ msg: 'Invalid Credentials' }));
+};
+
+/**
+ * vérification cookie + role
+ */
+ const checkAuth = (req, res, next) => {
+  if (req.headers.user_agent) {
+    const auth = userHelper.checkJwtAuth(req.headers.user_agent);
+    if (auth) {
+      Users.findOneByEmail(auth.email)
+        .then((user) => {
+          if (user.uuidusers === auth.uuid) next();
+          else res.status(401).json({ msg: 'Unauthorized Path 1' });
+        })
+        .catch((err) => res.status(500).json({ msg: 'Error retrieving data' }));
+    } else {
+      res.status(401).json({ msg: 'Unauthorized Path 2' });
+    }
+  } else {
+    res.status(401).json({ msg: 'Unauthorized Path 3' });
+  }
+};
+
 module.exports = {
   hashedPassword,
   createUuid,
   checkUserFields,
+  checkPassword ,
+  checkAuth
 };

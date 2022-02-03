@@ -19,7 +19,7 @@ const findCategories = () => {
  */
 const findOne = (id) => {
   return pool
-    .query("SELECT * FROM articles WHERE id = $1", [id])
+    .query("SELECT articles.id,titre,resume,textcomplet,image,name FROM articles INNER JOIN categories ON articles.categorie_id=categories.id WHERE articles.id = $1", [id])
     .then((results) => results);
 };
 
