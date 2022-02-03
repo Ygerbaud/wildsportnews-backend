@@ -4,7 +4,6 @@ const Joi = require("joi");
 const Users = require('../models/user');
 const userHelper = require('../helpers/users');
 
-
 const saltRound = 11;
 
 /**
@@ -46,7 +45,6 @@ const checkUserFields = (req, res, next) => {
         )
       )
       .presence("required"),
-    favorite_id: Joi.number().integer(),
   }).validate(req.body, { abortEarly: false }).error;
 
   if (error) {

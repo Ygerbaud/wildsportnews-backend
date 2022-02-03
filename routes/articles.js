@@ -39,5 +39,18 @@ ArticlesRouter.get('/:id', (req, res) => {
 });
 
 
+// Suppression d'un report
+ArticlesRouter.delete('/:id',(req, res) => {
+  const { id } = req.params;
+  Article.deleteOne(id)
+    .then((articles) => {
+      res.send({ success: 'report deleted successfully', data: articles.rows });
+    })
+    .catch((err) => {
+      console.error(err.message);
+      res.send('Error delete the report');
+    });
+});
+
 
 module.exports = ArticlesRouter;
